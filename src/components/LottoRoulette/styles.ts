@@ -35,11 +35,6 @@ const winPulse = keyframes`
   }
 `;
 
-const reelSpin = keyframes`
-  0% { transform: translateY(0); }
-  100% { transform: translateY(var(--final-translate)); }
-`;
-
 const ballReveal = keyframes`
   0% {
     transform: scale(0) rotate(-180deg);
@@ -255,21 +250,15 @@ export const ReelWindow = styled.div`
 `;
 
 export const ReelStrip = styled.div<{
-  $isSpinning: boolean;
-  $finalTranslate: number;
+  $translateY: number;
   $duration: number;
   $delay: number;
 }>`
   display: flex;
   flex-direction: column;
-  will-change: transform;
-  --final-translate: ${({ $finalTranslate }) => $finalTranslate}px;
-
-  ${({ $isSpinning, $duration, $delay }) =>
-    $isSpinning &&
-    `
-    animation: ${reelSpin} ${$duration}ms cubic-bezier(0.17, 0.67, 0.12, 0.99) ${$delay}ms forwards;
-  `}
+  transform: translateY(${({ $translateY }) => $translateY}px);
+  transition: transform ${({ $duration }) => $duration}ms cubic-bezier(0.17, 0.67, 0.12, 0.99)
+    ${({ $delay }) => $delay}ms;
 `;
 
 export const ReelCell = styled.div<{ $bgColor: string }>`
