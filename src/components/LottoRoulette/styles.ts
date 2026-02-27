@@ -253,12 +253,15 @@ export const ReelStrip = styled.div<{
   $translateY: number;
   $duration: number;
   $delay: number;
+  $animate: boolean;
 }>`
   display: flex;
   flex-direction: column;
   transform: translateY(${({ $translateY }) => $translateY}px);
-  transition: transform ${({ $duration }) => $duration}ms cubic-bezier(0.17, 0.67, 0.12, 0.99)
-    ${({ $delay }) => $delay}ms;
+  transition: ${({ $animate, $duration, $delay }) =>
+    $animate
+      ? `transform ${$duration}ms cubic-bezier(0.17, 0.67, 0.12, 0.99) ${$delay}ms`
+      : 'none'};
 `;
 
 export const ReelCell = styled.div<{ $bgColor: string }>`

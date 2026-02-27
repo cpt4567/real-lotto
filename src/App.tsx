@@ -1,7 +1,12 @@
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { LottoRoulette } from './components';
 
 function App() {
-  return <LottoRoulette />;
+  return (
+    <ErrorBoundary>
+      <LottoRoulette />
+    </ErrorBoundary>
+  );
 }
 
 export default App;

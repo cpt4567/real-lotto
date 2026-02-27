@@ -20,16 +20,17 @@ function SlotReelComponent({ targetNumber, isSpinning, delay }: SlotReelProps) {
   const stopIndex =
     REEL.STOP_OCCURRENCE * 45 + Math.max(0, (targetNumber ?? 1) - 1);
   const finalTranslate = -(stopIndex * REEL.CELL_HEIGHT);
+  const translateY = isSpinning && targetNumber ? finalTranslate : 0;
 
   return (
     <ReelWrapper>
       <ReelFrame>
         <ReelWindow>
           <ReelStrip
-            $isSpinning={Boolean(isSpinning && targetNumber)}
-            $finalTranslate={finalTranslate}
+            $translateY={translateY}
             $duration={ANIMATION.REEL_SPIN_DURATION}
             $delay={delay}
+            $animate={Boolean(isSpinning && targetNumber)}
           >
             {REEL_CELLS.map((num, i) => (
               <ReelCell key={i} $bgColor={getNumberColor(num)}>

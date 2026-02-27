@@ -45,40 +45,49 @@ export default function LottoRoulette() {
 
   const handleCopy = useCallback(async () => {
     if (numbers.length !== LOTTO.COUNT) return;
-    await copy(numbers.join(', '));
+    try {
+      await copy(numbers.join(', '));
+    } catch {
+      /* ignore copy errors */
+    }
   }, [numbers, copy]);
 
   const handleSpin = useCallback(() => {
     if (isSpinning) return;
 
-    setIsSpinning(true);
-    setNumbers([]);
-    setReelStates(Array(LOTTO.REEL_COUNT).fill(0));
-    setShowWin(false);
+    try {
+      setIsSpinning(true);
+      setNumbers([]);
+      setReelStates(Array(LOTTO.REEL_COUNT).fill(0));
+      setShowWin(false);
 
-    const newNumbers = generateLottoNumbers();
+      const newNumbers = generateLottoNumbers();
 
-    newNumbers.forEach((num, index) => {
+      newNumbers.forEach((num, index) => {
+        setTimeout(() => {
+          setReelStates((prev) => {
+            const next = [...prev];
+            next[index] = num;
+            return next;
+          });
+        }, index * ANIMATION.REEL_STAGGER);
+      });
+
+      setNumbers(newNumbers);
+
+      const totalDuration =
+        ANIMATION.REEL_STAGGER * (LOTTO.REEL_COUNT - 1) +
+        ANIMATION.REEL_SPIN_DURATION +
+        400;
+
       setTimeout(() => {
-        setReelStates((prev) => {
-          const next = [...prev];
-          next[index] = num;
-          return next;
-        });
-      }, index * ANIMATION.REEL_STAGGER);
-    });
-
-    setNumbers(newNumbers);
-
-    const totalDuration =
-      ANIMATION.REEL_STAGGER * (LOTTO.REEL_COUNT - 1) +
-      ANIMATION.REEL_SPIN_DURATION +
-      400;
-
-    setTimeout(() => {
+        setIsSpinning(false);
+        setShowWin(true);
+      }, totalDuration);
+    } catch (err) {
+      console.error('Spin error:', err);
       setIsSpinning(false);
-      setShowWin(true);
-    }, totalDuration);
+    }
   }, [isSpinning]);
 
   const hasAnyResult = reelStates.some((n) => n > 0);
