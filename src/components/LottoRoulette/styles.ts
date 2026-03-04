@@ -1,4 +1,4 @@
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { theme } from '../../theme';
 
 const bgShift = keyframes`
@@ -32,17 +32,6 @@ const winPulse = keyframes`
   }
   50% { 
     box-shadow: 0 0 0 8px ${theme.colors.gold}, 0 0 120px rgba(230, 184, 0, 0.35);
-  }
-`;
-
-const ballReveal = keyframes`
-  0% {
-    transform: scale(0) rotate(-180deg);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(1) rotate(0);
-    opacity: 1;
   }
 `;
 
@@ -157,7 +146,11 @@ export const MachineBody = styled.div<{ $showWin: boolean }>`
     inset 0 2px 0 rgba(255,255,255,0.2),
     inset 0 -2px 0 rgba(0,0,0,0.3);
   transition: box-shadow 0.6s ease;
-  ${({ $showWin }) => $showWin && `animation: ${winPulse} 4s ease-in-out infinite;`}
+  ${({ $showWin }) =>
+    $showWin &&
+    css`
+      animation: ${winPulse} 4s ease-in-out infinite;
+    `}
 
   @media (max-width: 480px) {
     padding: 1.25rem;
@@ -312,10 +305,7 @@ export const Display = styled.div`
   box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.6), 0 2px 0 rgba(0,0,0,0.2);
 `;
 
-export const ResultBall = styled.div<{
-  $bgColor: string;
-  $animationDelay: number;
-}>`
+export const ResultBall = styled.div<{ $bgColor: string }>`
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -328,12 +318,7 @@ export const ResultBall = styled.div<{
   background-color: ${({ $bgColor }) => $bgColor};
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
   border: 2px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 
-    0 4px 15px rgba(0, 0, 0, 0.4),
-    0 4px 20px ${({ $bgColor }) => $bgColor}40,
-    inset 0 2px 6px rgba(255, 255, 255, 0.3);
-  animation: ${ballReveal} 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)
-    ${({ $animationDelay }) => $animationDelay}s backwards;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 2px 6px rgba(255, 255, 255, 0.3);
 
   @media (max-width: 480px) {
     width: 38px;

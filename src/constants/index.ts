@@ -15,8 +15,8 @@ export const ANIMATION = {
 
 export const REEL = {
   CELL_HEIGHT: 56,
-  NUM_REPEATS: 25,
-  STOP_OCCURRENCE: 20,
+  NUM_REPEATS: 21,
+  STOP_OCCURRENCE: 18,
 } as const;
 
 export const EXTERNAL_LINKS = {

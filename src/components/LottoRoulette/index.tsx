@@ -1,8 +1,8 @@
-import { useState, useCallback } from 'react';
-import { generateLottoNumbers, getNumberColor } from '../../utils/lotto';
-import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
-import { LOTTO, ANIMATION, EXTERNAL_LINKS } from '../../constants';
-import { SlotReel } from './SlotReel';
+import { useState, useCallback } from "react";
+import { generateLottoNumbers, getNumberColor } from "../../utils/lotto";
+import { useCopyToClipboard } from "../../hooks/useCopyToClipboard";
+import { LOTTO, ANIMATION, EXTERNAL_LINKS } from "../../constants";
+import { SlotReel } from "./SlotReel";
 import {
   Container,
   Content,
@@ -30,7 +30,7 @@ import {
   CopyButton,
   LinkButton,
   InfoText,
-} from './styles';
+} from "./styles";
 
 const LIGHT_DELAYS = [0, 0.15, 0.3, 0.45, 0.6];
 
@@ -38,7 +38,7 @@ export default function LottoRoulette() {
   const [numbers, setNumbers] = useState<number[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [reelStates, setReelStates] = useState<number[]>(
-    Array(LOTTO.REEL_COUNT).fill(0)
+    Array(LOTTO.REEL_COUNT).fill(0),
   );
   const [showWin, setShowWin] = useState(false);
   const { copy, isSuccess: copySuccess } = useCopyToClipboard();
@@ -46,7 +46,7 @@ export default function LottoRoulette() {
   const handleCopy = useCallback(async () => {
     if (numbers.length !== LOTTO.COUNT) return;
     try {
-      await copy(numbers.join(', '));
+      await copy(numbers.join(", "));
     } catch {
       /* ignore copy errors */
     }
@@ -85,7 +85,7 @@ export default function LottoRoulette() {
         setShowWin(true);
       }, totalDuration);
     } catch (err) {
-      console.error('Spin error:', err);
+      console.error("Spin error:", err);
       setIsSpinning(false);
     }
   }, [isSpinning]);
@@ -134,19 +134,19 @@ export default function LottoRoulette() {
           <MachineBottom>
             <Display>
               {hasAnyResult ? (
-                reelStates.map((num, i) =>
-                  num > 0 ? (
-                    <ResultBall
-                      key={i}
-                      $bgColor={getNumberColor(num)}
-                      $animationDelay={0.05 + i * 0.1}
-                    >
+                reelStates.map((num, i) => {
+                  if (num <= 0) {
+                    return (
+                      <ResultPlaceholder key={`ph-${i}`}>?</ResultPlaceholder>
+                    );
+                  }
+                  const color = getNumberColor(num);
+                  return (
+                    <ResultBall key={`ball-${i}-${num}`} $bgColor={color}>
                       {num}
                     </ResultBall>
-                  ) : (
-                    <ResultPlaceholder key={i}>?</ResultPlaceholder>
-                  )
-                )
+                  );
+                })
               ) : (
                 <PlaceholderText>??? ??? ??? ??? ??? ???</PlaceholderText>
               )}
@@ -163,8 +163,7 @@ export default function LottoRoulette() {
           >
             {isSpinning ? (
               <>
-                <Spinner />
-                릴 회전 중...
+                <Spinner />릴 회전 중...
               </>
             ) : (
               <>
@@ -182,7 +181,7 @@ export default function LottoRoulette() {
                 onClick={handleCopy}
                 title="번호 복사"
               >
-                {copySuccess ? '✓ 복사됨' : '📋 번호 복사'}
+                {copySuccess ? "✓ 복사됨" : "📋 번호 복사"}
               </CopyButton>
               <LinkButton
                 href={EXTERNAL_LINKS.DONGHAENG}

@@ -21,9 +21,11 @@ export function generateLottoNumbers(): number[] {
 
 /** 번호별 색상 (한국 로또 공식 구간 색상) */
 export function getNumberColor(num: number): string {
-  if (num <= 9) return '#FBC02D';   // 1-9: 노랑
-  if (num <= 19) return '#1976D2';  // 10-19: 파랑
-  if (num <= 29) return '#D32F2F';  // 20-29: 빨강
-  if (num <= 39) return '#212121';  // 30-39: 검정
-  return '#388E3C';                  // 40-45: 초록
+  const n = Math.floor(Number(num));
+  if (!Number.isFinite(n) || n < 1 || n > 45) return '#FBC02D';
+  if (n <= 9) return '#FBC02D';   // 1-9: 노랑
+  if (n <= 19) return '#1976D2';  // 10-19: 파랑
+  if (n <= 29) return '#D32F2F';  // 20-29: 빨강
+  if (n <= 39) return '#212121';  // 30-39: 검정
+  return '#388E3C';                // 40-45: 초록
 }
